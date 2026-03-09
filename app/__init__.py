@@ -1,0 +1,1 @@
+"""LabPilot application package."""

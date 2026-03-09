@@ -1,0 +1,13 @@
+.env
+.git
+.github
+.omx
+.packages
+.pytest_cache
+.venv
+__pycache__
+build
+dist
+labpilot.db
+uploads
+*.egg-info

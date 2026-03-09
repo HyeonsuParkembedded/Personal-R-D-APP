@@ -1,0 +1,41 @@
+services:
+  api:
+    build:
+      context: .
+    container_name: labpilot-api
+    ports:
+      - "8000:8000"
+    environment:
+      APP_NAME: LabPilot API
+      APP_ENV: production
+      API_PREFIX: /api
+      DATABASE_URL: postgresql+psycopg://labpilot:labpilot@db:5432/labpilot
+      UPLOAD_DIR: /data/uploads
+    volumes:
+      - uploads:/data/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:17
+    container_name: labpilot-db
+    environment:
+      POSTGRES_DB: labpilot
+      POSTGRES_USER: labpilot
+      POSTGRES_PASSWORD: labpilot
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U labpilot -d labpilot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  uploads:
