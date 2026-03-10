@@ -25,10 +25,28 @@ uvicorn app.main:app --reload
 ## Docker Compose
 
 ```bash
-docker compose up --build
+docker compose up --build -d
 ```
 
 API 서버는 `http://localhost:8000`, PostgreSQL은 `localhost:5432`로 노출됩니다.
+
+## Testing
+
+로컬 환경에 Python 패키지를 설치하지 않고 Docker 컨테이너 내부에서 테스트를 실행할 수 있습니다.
+최상위 디렉토리에 있는 `test.sh` 스크립트를 사용하세요:
+
+```bash
+# 실행 권한 부여 (최초 1회)
+chmod +x test.sh
+
+# 테스트 실행
+./test.sh
+```
+
+또는 직접 Docker 명령어를 사용할 수 있습니다:
+```bash
+docker compose exec api pytest
+```
 
 ## CI/CD
 
