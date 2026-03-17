@@ -25,6 +25,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(api_router, prefix=settings.api_prefix)
+initialize_storage()
 app.mount("/uploads", StaticFiles(directory=settings.upload_dir), name="uploads")
 
 
