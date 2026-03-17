@@ -117,6 +117,7 @@ docker compose exec api pytest
 | `DATABASE_URL` | `sqlite:///./labpilot.db` | DB 연결 문자열 |
 | `UPLOAD_DIR` | `./uploads` | 파일 업로드 경로 |
 | `APP_NAME` | `LabPilot` | 앱 이름 |
+| `ALLOWED_ORIGINS` | `["*"]` | CORS 허용 오리진 (운영: `["https://rnd.hyunsu5203.synology.me"]`) |
 
 ---
 
