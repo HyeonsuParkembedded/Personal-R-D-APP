@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     api_prefix: str = "/api"
     database_url: str = "sqlite:///./labpilot.db"
     upload_dir: str = "./uploads"
+    allowed_origins: list[str] = ["*"]
 
     model_config = SettingsConfigDict(
         env_file=".env",
