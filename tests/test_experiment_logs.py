@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 
 def create_project(client) -> int:
@@ -14,7 +14,7 @@ def make_log_payload(project_id: int, title: str = "Test Log") -> dict:
     return {
         "project_id": project_id,
         "title": title,
-        "recorded_at": datetime.now(timezone.utc).isoformat(),
+        "recorded_at": datetime.now(UTC).isoformat(),
         "objective": "Test objective",
         "board_firmware_version": "v1.0.0",
         "conditions": "Lab bench",

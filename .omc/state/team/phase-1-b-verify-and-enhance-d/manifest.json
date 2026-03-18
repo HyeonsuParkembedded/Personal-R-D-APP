@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "name": "phase-1-b-verify-and-enhance-d",
+  "task": "Phase 1-B: Verify; enhance docker-compose for Synology NAS deployment. Target dir: /home/uniqstar-s",
+  "leader": {
+    "session_id": "labpilot:0",
+    "worker_id": "leader-fixed",
+    "role": "leader"
+  },
+  "policy": {
+    "display_mode": "split_pane",
+    "worker_launch_mode": "interactive",
+    "dispatch_mode": "hook_preferred_with_fallback",
+    "dispatch_ack_timeout_ms": 15000
+  },
+  "governance": {
+    "delegation_only": false,
+    "plan_approval_required": false,
+    "nested_teams_allowed": false,
+    "one_team_per_leader_session": true,
+    "cleanup_requires_all_workers_inactive": true
+  },
+  "permissions_snapshot": {
+    "approval_mode": "default",
+    "sandbox_mode": "default",
+    "network_access": false
+  },
+  "tmux_session": "labpilot:0",
+  "worker_count": 2,
+  "workers": [
+    {
+      "name": "worker-1",
+      "index": 1,
+      "role": "claude",
+      "assigned_tasks": [],
+      "working_dir": "/home/uniqstar-sw/Desktop/Project/langent/workspace/personal_Research_and_Develope_app/Personal-R-D-APP"
+    },
+    {
+      "name": "worker-2",
+      "index": 2,
+      "role": "claude",
+      "assigned_tasks": [],
+      "working_dir": "/home/uniqstar-sw/Desktop/Project/langent/workspace/personal_Research_and_Develope_app/Personal-R-D-APP"
+    }
+  ],
+  "next_task_id": 3,
+  "created_at": "2026-03-17T06:59:58.986Z",
+  "leader_cwd": "/home/uniqstar-sw/Desktop/Project/langent/workspace/personal_Research_and_Develope_app/Personal-R-D-APP",
+  "team_state_root": "/home/uniqstar-sw/Desktop/Project/langent/workspace/personal_Research_and_Develope_app/Personal-R-D-APP/.omc/state/team/phase-1-b-verify-and-enhance-d",
+  "leader_pane_id": "%0",
+  "hud_pane_id": null,
+  "resize_hook_name": null,
+  "resize_hook_target": null
+}

@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 
@@ -25,7 +25,7 @@ def test_project_crud_and_timeline(client) -> None:
             "name": "labpilot-api",
             "owner": "hyuns",
             "url": "https://github.com/hyuns/labpilot-api",
-            "last_synced_at": datetime.now(timezone.utc).isoformat(),
+            "last_synced_at": datetime.now(UTC).isoformat(),
         },
     )
     assert repository_response.status_code == 201
@@ -35,7 +35,7 @@ def test_project_crud_and_timeline(client) -> None:
         json={
             "project_id": project_id,
             "title": "LoRa Range Test",
-            "recorded_at": datetime.now(timezone.utc).isoformat(),
+            "recorded_at": datetime.now(UTC).isoformat(),
             "objective": "Measure field range",
             "board_firmware_version": "v0.2.1",
             "conditions": "Open field, 5C, clear sky",

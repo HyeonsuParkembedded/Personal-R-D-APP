@@ -92,18 +92,13 @@ def get_project_summary(project_id: int, db: Session = Depends(get_db_session)) 
     if project is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Project not found")
 
-    repositories = [
-        ProjectRepositorySummary.model_validate(repository)
-        for repository in project.repositories
-    ]
+    repositories = [ProjectRepositorySummary.model_validate(repository) for repository in project.repositories]
     latest_experiment_logs = sorted(
         project.experiment_logs,
         key=lambda item: item.recorded_at,
         reverse=True,
     )[:5]
-    open_hardware_issues = [
-        issue for issue in project.hardware_issues if issue.status != HardwareIssueStatus.FIXED
-    ][:5]
+    open_hardware_issues = [issue for issue in project.hardware_issues if issue.status != HardwareIssueStatus.FIXED][:5]
 
     return ProjectActivitySummary(
         project=ProjectDetail.model_validate(project),

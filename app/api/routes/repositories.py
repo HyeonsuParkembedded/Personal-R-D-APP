@@ -15,11 +15,7 @@ def list_project_repositories(project_id: int, db: Session = Depends(get_db_sess
     if project is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Project not found")
 
-    statement = (
-        select(Repository)
-        .where(Repository.project_id == project_id)
-        .order_by(Repository.updated_at.desc())
-    )
+    statement = select(Repository).where(Repository.project_id == project_id).order_by(Repository.updated_at.desc())
     return list(db.scalars(statement))
 
 
