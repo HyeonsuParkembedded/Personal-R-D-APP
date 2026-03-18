@@ -46,7 +46,53 @@ jobs:
         run: uv run mypy app
 
       - name: Run test suite with coverage
-        run: uv run pytest --cov=app --cov-report=term-missing --cov-fail-under=50
+        run: uv run pytest --cov=app --cov-report=term-missing --cov-fail-under=80
+
+  test-postgres:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: labpilot_test
+          POSTGRES_USER: labpilot
+          POSTGRES_PASSWORD: testpassword
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Cache uv
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: uv-${{ runner.os }}-${{ hashFiles('**/pyproject.toml') }}
+          restore-keys: |
+            uv-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: uv sync --all-extras
+
+      - name: Run tests against PostgreSQL
+        env:
+          CI_DATABASE_URL: postgresql+psycopg://labpilot:testpassword@localhost:5432/labpilot_test
+        run: uv run pytest --cov=app --cov-report=term-missing --cov-fail-under=80
 
   docker:
     runs-on: ubuntu-latest
@@ -67,3 +113,27 @@ jobs:
           context: .
           load: true
           tags: labpilot:ci
+
+      - name: Smoke test container
+        run: |
+          docker run -d -p 8000:8000 \
+            -e DATABASE_URL=sqlite:////tmp/smoke.db \
+            -e UPLOAD_DIR=/tmp/uploads \
+            --name smoketest labpilot:ci
+          sleep 5
+          curl -sf http://localhost:8000/health | grep -q '"status":"ok"'
+          docker stop smoketest && docker rm smoketest
+
+  secret-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Secret scan (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

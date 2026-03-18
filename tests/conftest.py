@@ -1,3 +1,4 @@
+import os
 from collections.abc import Generator
 from pathlib import Path
 
@@ -11,16 +12,21 @@ from app.db.session import get_db_session
 from app.main import app
 from app.models import Base
 
+_CI_DB_URL = os.getenv("CI_DATABASE_URL")
+
 
 @pytest.fixture()
 def client(tmp_path: Path) -> Generator[TestClient, None, None]:
-    database_path = tmp_path / "test.db"
     upload_path = tmp_path / "uploads"
-    engine = create_engine(
-        f"sqlite:///{database_path}",
-        future=True,
-        connect_args={"check_same_thread": False},
-    )
+    if _CI_DB_URL:
+        engine = create_engine(_CI_DB_URL, future=True)
+    else:
+        database_path = tmp_path / "test.db"
+        engine = create_engine(
+            f"sqlite:///{database_path}",
+            future=True,
+            connect_args={"check_same_thread": False},
+        )
     testing_session = sessionmaker(bind=engine, autoflush=False, autocommit=False, expire_on_commit=False)
     Base.metadata.create_all(bind=engine)
 

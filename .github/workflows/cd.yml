@@ -47,8 +47,19 @@ jobs:
         with:
           context: .
           push: true
+          load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Smoke test deployed image
+        run: |
+          docker run -d -p 8000:8000 \
+            -e DATABASE_URL=sqlite:////tmp/smoke.db \
+            -e UPLOAD_DIR=/tmp/uploads \
+            --name smoketest ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          sleep 5
+          curl -sf http://localhost:8000/health | grep -q '"status":"ok"'
+          docker stop smoketest && docker rm smoketest
 
       - name: Scan image for vulnerabilities (Trivy)
         uses: aquasecurity/trivy-action@master
