@@ -10,3 +10,10 @@ build/
 dist/
 labpilot.db
 uploads/
+
+# OMC state
+.omc/
+
+# Coverage
+.coverage
+htmlcov/

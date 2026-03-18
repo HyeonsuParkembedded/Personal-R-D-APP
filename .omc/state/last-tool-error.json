@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"uv run ruff check app tests && uv run ruff format --check app tests && echo \\\"ruff OK\\\"\",\"description\":\"Run ruff lint and format check\"}",
-  "error": "Exit code 1\nUP017 [*] Use `datetime.UTC` alias\n  --> tests/test_experiment_logs.py:17:37\n   |\n15 |         \"project_id\": project_id,\n16 |         \"title\": title,\n17 |         \"recorded_at\": datetime.now(timezone.utc).isoformat(),\n   |                                     ^^^^^^^^^^^^\n18 |         \"objective\": \"Test objective\",\n19 |         \"board_firmware_version\": \"v1.0.0\",\n   |\nhelp: Convert to `datetime.UTC` alias\n\nUP017 [*] Use `datetime.UTC` alias\n  --> tests/test_projects.py:28:44\n   |\n26 |...",
-  "timestamp": "2026-03-18T01:59:15.670Z",
-  "retry_count": 1
-}
