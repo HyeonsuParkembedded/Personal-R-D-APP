@@ -17,3 +17,6 @@ uploads/
 # Coverage
 .coverage
 htmlcov/
+
+# OMC state
+.omc/
